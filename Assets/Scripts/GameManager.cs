@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         //TODO:  Reiniciamos la ronda pulsando R
+        EnemyMove(activeEnemies);
     }
 
     //Generar oleada
@@ -104,11 +105,7 @@ public class GameManager : MonoBehaviour
         //TODO: 
         // Primero eliminamos cualquier enemigo
         // que todavía esté vivo.
-        foreach (GameObject enemy in activeEnemies)
-        {
-            Destroy(enemy);
-        }
-        activeEnemies.Clear();
+        EliminarEnemigos();
         // Generamos una nueva oleada.
         GenerarEnemigos();
     }
@@ -126,5 +123,26 @@ public class GameManager : MonoBehaviour
         }
         // Dejamos vacía la lista.
         activeEnemies.Clear();
+    }
+
+    private void EnemyMove(List<GameObject> enemies)
+    {
+        foreach (var enemy in enemies)
+        {
+            int modifier = 1;
+
+            if (Random.Range(0, 2) == 0)
+            {
+                if (enemy.transform.position.x >= 10) modifier = -5;
+
+                enemy.transform.position += new Vector3(speed * modifier * Time.deltaTime, 0, 0);
+            }
+            else
+            {
+                if (enemy.transform.position.x <= -11) modifier = -5;
+
+                enemy.transform.position += new Vector3(-speed * modifier * Time.deltaTime, 0, 0);
+            }
+        }
     }
 }
